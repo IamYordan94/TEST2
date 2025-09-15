@@ -30,6 +30,8 @@ model Match {
   seed      String
   endAtMs   BigInt
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 model Score {
@@ -43,5 +45,4 @@ model Score {
 
   @@index([mode, period, value])
 }
-
 
