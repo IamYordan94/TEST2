@@ -201,3 +201,26 @@ export default function RoomPage({ params }: Props) {
   );
 }
 
+function reasonToCopy(reason: string): string {
+  switch (reason) {
+    case 'non_lowercase':
+      return 'Use lowercase letters only';
+    case 'non_letters':
+      return 'Letters a-z only';
+    case 'too_short':
+      return 'Word too short (min 2)';
+    case 'duplicate':
+      return 'Already used';
+    case 'not_in_dictionary':
+      return 'Not in dictionary';
+    case 'wrong_start_letter':
+      return 'Wrong starting letter';
+    case 'plural_guard':
+      return 'Plural not allowed when singular exists';
+    case 'banned_letter':
+      return 'Contains banned letter';
+    default:
+      return 'Invalid word';
+  }
+}
+
