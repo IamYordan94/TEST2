@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = env("DATABASE_PROVIDER")
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  profiles  Profile[]
+  scores    Score[]
+  matches   Match[]
+  createdAt DateTime  @default(now())
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  xp        Int      @default(0)
+  rank      String   @default("Bronze")
+  createdAt DateTime @default(now())
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  mode      String
+  seed      String
+  endAtMs   BigInt
+  createdAt DateTime @default(now())
+}
+
+model Score {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  mode       String
+  value      Int
+  period     String   @default("daily")
+  occurredAt DateTime @default(now())
+
+  @@index([mode, period, value])
+}
+
