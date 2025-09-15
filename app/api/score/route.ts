@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
   const { userId, mode, value, seed, endAtMs, signature } = body as { userId: string; mode: 'endless' | 'duel'; value: number; seed: string; endAtMs: number; signature: string };
   if (!userId || !mode || typeof value !== 'number' || !seed || typeof endAtMs !== 'number' || !signature) return new Response('Bad Request', { status: 400 });
 
-  const secret = process.env.MATCH_SIGNING_SECRET;
-  if (secret || process.env.VERCEL === '1') {
+  const secret = process.env.MATCH_SIGNING_SECRET ?? '';
+  if (secret !== '' || process.env.VERCEL === '1') {
     const ok = verifyMatchSignature({ userId, mode, value, seed, endAtMs, signature }, secret);
     if (!ok) return new Response('Invalid signature', { status: 400 });
   }
